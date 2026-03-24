@@ -1,4 +1,4 @@
-INSERT INTO public.draftapp_accessaction (name) VALUES
+INSERT INTO public.authorization_app_accessaction (name) VALUES
 	 ('s_action_1'),
 	 ('s_action_2'),
 	 ('s_action_3'),
