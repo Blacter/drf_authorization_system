@@ -9,8 +9,6 @@ from authorization_app.models import User
 type Header = dict[str, str]
 type Payload = dict[str, str]
 
-# UNSAVE_SECRET_KEY: str = 'a91716a4fdb96819cec872bd7798397fd54fb9d4852907858e84da576672192c'
-
 class JWTNotInCookiesErrors(Exception):
     def __str__(self) -> str:
         return 'jwt not in cookies'
@@ -27,26 +25,11 @@ class JWTService:
         self._is_token_valid: bool | None = None
 
     def decode_jwt_if_valid(self) -> bool:
-        # try:
-        #     self._decode_jwt_if_valid()
-        # except jwt.InvalidSignatureError:
-        #     print('Подпись токена не валидна')
-        # except jwt.ExpiredSignatureError:
-        #     print('Время жизни токена истекло')
-        # except jwt.InvalidTokenError:
-        #     print('InvalidTokenError')
-        # except User.DoesNotExist:
-        #     print('Пользователь не сущетсвует')
-        #     print(f'{self.user_id=}')
-        # except JWTNotInCookiesErrors as e:
-        #     print(str(e))
-
         self._decode_jwt_if_valid()
 
     def _decode_jwt_if_valid(self) -> None:
         if self._jwt_token is None:
             self._is_token_valid = False
-        #     raise JWTNotInCookiesErrors()
         try:
             self._decoded = jwt.decode(
                 self._jwt_token,
@@ -57,17 +40,13 @@ class JWTService:
 
         except jwt.InvalidSignatureError:
             self._is_token_valid = False
-            # raise
         except jwt.ExpiredSignatureError:
             self._is_token_valid = False
-            # raise
         except jwt.InvalidTokenError:
             self._is_token_valid = False
-            # raise
         except User.DoesNotExist:
             self._decoded = None
             self._is_token_valid = False
-            # raise
         else:
             self._is_token_valid = True
 

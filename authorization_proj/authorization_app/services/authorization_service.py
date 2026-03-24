@@ -14,7 +14,6 @@ class AuthorizationService:
             @wraps(view_method)
             def view_with_authorization(self_for_inner_function, request: Request) -> Response:
                 user_id: str = request.authentication_service.get_user_id()
-                # Authorization
                 authorization_service: AuthorizationService = AuthorizationService(user_id)
                 if not authorization_service.is_access_to_action(related_action):
                     return Response({'error': 'access forbidden'}, status=403)

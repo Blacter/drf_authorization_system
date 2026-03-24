@@ -1,8 +1,5 @@
-from pprint import pprint
-
 from django.contrib.auth.hashers import make_password
 from django.conf import settings
-from django.db import connection
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.request import Request
@@ -67,7 +64,6 @@ class DeleteProfileSoftAPI(APIView):
 class UserProfileAPI(APIView):
     @AuthenticationService.authenticate
     def patch(self, request: Request) -> Response:
-        # request.authentication_service.authenticate_user()
         try:
             instance = User.objects.get(
                 id=request.authentication_service.get_user_id())
@@ -109,11 +105,9 @@ class Resource3API(APIView):
 
 
 class AuthorizationControlGroupsAPI(APIView):
-    # get_user_groups_with_actions
     @AuthenticationService.authenticate
     @AuthorizationService.authorize(related_action='admin_action_1')
     def get(self, request: Request) -> Response:
-        pprint(connection.queries)
         result: list[dict] = []
         for user_group in UserGroup.objects.all():
             user_group_actions = user_group.actions.all()
@@ -121,10 +115,6 @@ class AuthorizationControlGroupsAPI(APIView):
                 'user_group': user_group.name,
                 'actions': [action.name for action in user_group_actions]
             })
-        print('connection.queries =')
-        print('-'*25)
-        pprint(connection.queries)
-        print('-'*25)
         return Response(result)
 
 
